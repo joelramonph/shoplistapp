@@ -11,7 +11,7 @@
 html,body{
     
     font-family: 'Rubik', sans-serif;
-    background-color: #EEF0F4;
+    background-color: #F0EEED;
     padding: 10px;
     color: #432000;
     user-select: none;
@@ -55,7 +55,7 @@ input{
 
 button{
 color: #fdfdfd;
-background-color: #AC485A;
+background-color: #E96479;
 border: 0;
     padding: 15px;
     border-radius: 8px;
@@ -96,6 +96,7 @@ ul li{
 }
 
 ul li:hover{
-    background-color: #AC485A;
+    background-color: #4D455D;
+    color: #F0EEED;
     cursor: pointer;
 }
