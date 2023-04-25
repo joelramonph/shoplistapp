@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
  
 
 const appSetting = {
@@ -45,27 +45,36 @@ onValue(shoppingListInDb, function(snapshot){
     //snapshot.val en un arreglo crea una variable para
     //almacenar estos
     
-    let itemsArr = Object.values(snapshot.val())
+     if (snapshot.exists()){
 
-    clearShoppingListEl()
-    // console.log(itemsArr)
-    
-    //Reto3 Escriba un fro loop para iterar sobre itemsArr
-    // e imprima en console cada item
-    for(let i = 0; i < itemsArr.length; i++){
-        /**
-         Reto4 Use la funcion appendItemToshoppingListEl(inputValue)
-         dentro del loop para abjuntar los elementos 
-         de la shopping list
+         let itemsArr = Object.entries(snapshot.val())
+     
+         // console.log(snapshot.val())
+     
+         // console.log(itemsArr)
          
-         */
-        appendItemToshoppingListEl(itemsArr[i])
-        console.log(itemsArr[i])
+         clearShoppingListEl()
+         //Reto3 Escriba un for loop para iterar sobre itemsArr
+         // e imprima en console cada item
+         for(let i = 0; i < itemsArr.length; i++){
+             /**
+              Reto4 Use la funcion appendItemToshoppingListEl(inputValue)
+              dentro del loop para abjuntar los elementos 
+              de la shopping list
+              
+              */
+             let currentItem = itemsArr[i]
+             let currentItemId = currentItem[0]
+             let currentItemValue = currentItem[1]
+     
+             appendItemToshoppingListEl(currentItem)
+             // console.log(itemsArr[i])
+     }
+
+    } else {
+        shoppingListEl.innerHTML = "No hay articulos aun"
+          
     }
-    
-    
-    
-    
     
 })
 
@@ -83,7 +92,21 @@ function clearInputField(){
 }
 
 //Inserta los valores en elemento <li></li>
-function appendItemToshoppingListEl(itemValue){
+function appendItemToshoppingListEl(item){
+     let itemID = item[0]
+     let itemValue = item[1]
+    // shoppingListEl.innerHTML += `<li>${itemValue}</li>`
+    let newEl = document.createElement("li")
+    newEl.textContent = itemValue
+    
+    newEl.addEventListener("click", function(){
+        
+        let exactLocalOfItemInBD = ref(database, `shoppingList/${itemID}`)
+        
+       remove(exactLocalOfItemInBD)
+           
+        })
+    
 
-    shoppingListEl.innerHTML += `<li>${itemValue}</li>`
+    shoppingListEl.append(newEl)
 }
